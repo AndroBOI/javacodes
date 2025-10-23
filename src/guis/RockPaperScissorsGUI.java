@@ -11,7 +11,7 @@ import java.util.Random;
 public class RockPaperScissorsGUI extends JFrame implements ActionListener {
     private JPanel cardPanel, gamePanel, losePanel, winPanel;
     private JButton rockBtn, paperBtn, scissorBtn, restartBtnLose, restartBtnWin;
-    private JLabel statusLabel, scoreLabel,  loseGifLabel, winLabel;
+    private JLabel statusLabel, scoreLabel, loseGifLabel, winLabel, loseLabel;
     private int playerScore = 0;
     private int compScore = 0;
     private final String[] choices = {"Rock", "Paper", "Scissors"};
@@ -21,8 +21,8 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
     public RockPaperScissorsGUI() {
         setTitle("Rock Paper Scissors");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        // Adjusted size slightly to better accommodate centered content
-        setSize(450, 450);
+        setResizable(false);
+        setSize(450, 400);
         setLocationRelativeTo(null);
 
         // --- Main card layout ---
@@ -30,26 +30,55 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         add(cardPanel);
 
         // ========== GAME PANEL ==========
-        gamePanel = new JPanel(new BorderLayout());
+        gamePanel = new JPanel(new BorderLayout(0, 10));
         gamePanel.setBackground(new Color(34, 34, 34));
+        gamePanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
         // Title at top
         JLabel title = new JLabel("Rock Paper Scissors", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 18));
+        title.setFont(new Font("Arial", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
         gamePanel.add(title, BorderLayout.NORTH);
 
-        // ******* Alignment FIX: Use an outer panel with FlowLayout to center the inner content *******
-        JPanel outerCenterPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        outerCenterPanel.setBackground(new Color(34, 34, 34));
-
-        // Center panel holds buttons + result text (This is the vertically stacked content)
+        // Center panel - holds everything in the middle
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(new Color(34, 34, 34));
-        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS)); // vertical stack
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+
+        // Score panel with enhanced visibility
+        JPanel scorePanel = new JPanel();
+        scorePanel.setBackground(new Color(45, 45, 45));
+        scorePanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(0, 123, 255), 2),
+                BorderFactory.createEmptyBorder(10, 20, 10, 20)
+        ));
+        scoreLabel = new JLabel("Player: 0  |  Computer: 0", SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        scoreLabel.setForeground(new Color(255, 215, 0)); // Gold color
+        scorePanel.add(scoreLabel);
+        scorePanel.setMaximumSize(new Dimension(380, 50));
+
+        centerPanel.add(scorePanel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+        // Status label with enhanced visibility
+        JPanel statusPanel = new JPanel();
+        statusPanel.setBackground(new Color(45, 45, 45));
+        statusPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(100, 100, 100), 1),
+                BorderFactory.createEmptyBorder(15, 20, 15, 20)
+        ));
+        statusLabel = new JLabel("Make your move!", SwingConstants.CENTER);
+        statusLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        statusLabel.setForeground(new Color(255, 255, 255));
+        statusPanel.add(statusLabel);
+        statusPanel.setMaximumSize(new Dimension(380, 90));
+
+        centerPanel.add(statusPanel);
+        centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         // Buttons panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0)); // center horizontally
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBackground(new Color(34, 34, 34));
 
         rockBtn = styleButton("Rock", new Color(0, 123, 255));
@@ -63,30 +92,11 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         buttonPanel.add(rockBtn);
         buttonPanel.add(paperBtn);
         buttonPanel.add(scissorBtn);
+        buttonPanel.setMaximumSize(new Dimension(450, 50));
 
-        // Add buttons to center panel
         centerPanel.add(buttonPanel);
-        centerPanel.add(Box.createRigidArea(new Dimension(0, 20))); // small space between buttons and status
 
-        // Status label below buttons
-        statusLabel = new JLabel("Make your move!", SwingConstants.CENTER);
-        statusLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        statusLabel.setForeground(Color.WHITE);
-        statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Important for BoxLayout
-        centerPanel.add(statusLabel);
-
-        // Add the vertical stack panel to the FlowLayout panel
-        outerCenterPanel.add(centerPanel);
-
-        // Add the centering panel to the game panel
-        gamePanel.add(outerCenterPanel, BorderLayout.CENTER);
-        // ******* Alignment FIX END *******
-
-        // Score at very bottom
-        scoreLabel = new JLabel("Player: 0  |  Computer: 0", SwingConstants.CENTER);
-        scoreLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        scoreLabel.setForeground(Color.LIGHT_GRAY);
-        gamePanel.add(scoreLabel, BorderLayout.SOUTH);
+        gamePanel.add(centerPanel, BorderLayout.CENTER);
 
         // Add to card panel
         cardPanel.add(gamePanel, "Game");
@@ -94,12 +104,21 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         // ========== LOSE PANEL ==========
         losePanel = new JPanel(new BorderLayout());
         losePanel.setBackground(new Color(34, 34, 34));
+
+        loseLabel = new JLabel("YOU LOSE!", SwingConstants.CENTER);
+        loseLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        loseLabel.setForeground(Color.RED);
+        losePanel.add(loseLabel, BorderLayout.NORTH);
+
         loseGifLabel = new JLabel("", SwingConstants.CENTER);
         losePanel.add(loseGifLabel, BorderLayout.CENTER);
 
         restartBtnLose = styleButton("Restart Game", new Color(0, 123, 255));
         restartBtnLose.addActionListener(e -> resetGame());
-        losePanel.add(restartBtnLose, BorderLayout.SOUTH);
+        JPanel loseBtnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        loseBtnPanel.setBackground(new Color(34, 34, 34));
+        loseBtnPanel.add(restartBtnLose);
+        losePanel.add(loseBtnPanel, BorderLayout.SOUTH);
 
         cardPanel.add(losePanel, "Lose");
 
@@ -109,13 +128,15 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
         winLabel = new JLabel("YOU WIN!", SwingConstants.CENTER);
         winLabel.setFont(new Font("Arial", Font.BOLD, 32));
-        winLabel.setForeground(new Color(0, 150, 0));
+        winLabel.setForeground(new Color(0, 200, 0));
         winPanel.add(winLabel, BorderLayout.CENTER);
 
-        restartBtnWin =styleButton("Restart Game", new Color(0, 123, 255));
-
+        restartBtnWin = styleButton("Restart Game", new Color(0, 123, 255));
         restartBtnWin.addActionListener(e -> resetGame());
-        winPanel.add(restartBtnWin, BorderLayout.SOUTH);
+        JPanel winBtnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        winBtnPanel.setBackground(new Color(34, 34, 34));
+        winBtnPanel.add(restartBtnWin);
+        winPanel.add(winBtnPanel, BorderLayout.SOUTH);
 
         cardPanel.add(winPanel, "Win");
 
@@ -125,14 +146,13 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-
     private JButton styleButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
         button.setBackground(color);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
+        button.setBorder(BorderFactory.createEmptyBorder(10, 18, 10, 18));
 
         // Hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -153,11 +173,12 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         String compChoice = choices[random.nextInt(3)];
         String result = getResult(playerChoice, compChoice);
 
-        // Wrap result text using HTML so it doesn't stretch
+        // Wrap result text using HTML
         String wrappedText = "<html><center>"
                 + "You: " + playerChoice + "<br>"
                 + "Computer: " + compChoice + "<br>"
-                + "→ " + result
+                + "<span style='color: " + getResultColor(result) + "; font-size: 16px;'>"
+                + result + "</span>"
                 + "</center></html>";
 
         statusLabel.setText(wrappedText);
@@ -168,6 +189,12 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         } else if (compScore == 3) {
             showLoseScreen();
         }
+    }
+
+    private String getResultColor(String result) {
+        if (result.equals("You Win!")) return "#00FF00";
+        if (result.equals("You Lose!")) return "#FF4444";
+        return "#FFFF00";
     }
 
     private String getResult(String player, String comp) {
@@ -185,7 +212,6 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
     private void showLoseScreen() {
         try {
-            // NOTE: This will fail if the resource is not correctly placed in the package
             ImageIcon icon = new ImageIcon(getClass().getResource("/guis/resources/aray-ko.gif"));
             loseGifLabel.setIcon(icon);
         } catch (Exception ex) {
@@ -196,7 +222,6 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         }
 
         cardLayout.show(cardPanel, "Lose");
-        // NOTE: This will fail if the resource is not correctly placed in the package
         playSound("/guis/resources/aray-ko.wav");
     }
 
@@ -226,13 +251,11 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
                 clip.open(audioStream);
                 clip.start();
             } catch (Exception e) {
-                // e.printStackTrace(); // Keep this commented out unless debugging
                 System.err.println("Error playing sound: " + e.getMessage());
             }
         }).start();
     }
 
-    // Optional main method for quick testing
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RockPaperScissorsGUI());
     }

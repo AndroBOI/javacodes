@@ -4,67 +4,57 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class Test extends JFrame {
 
     Test() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300,500);
-        setTitle("Test Card");
+        setSize(300, 400);
+        setTitle("CardLayout Example");
         setLayout(new BorderLayout());
+        UIManager.put("Label.foreground", Color.WHITE);
 
-        JPanel cardPanel = new JPanel();
-        cardPanel.setSize(250, 50);
-        JPanel buttonPanel = new JPanel();
-
+        // Create CardLayout and main panel
         CardLayout cardLayout = new CardLayout();
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(cardLayout);
+        JPanel mainPanel = new JPanel(cardLayout);
 
-        JPanel firstPanel = new JPanel();
-        firstPanel.setLayout(new FlowLayout());
-        JLabel firstPanelTitle = new JLabel("This is First Panel");
-        firstPanelTitle.setForeground(Color.WHITE);
-        firstPanel.add(firstPanelTitle);
-        firstPanel.setBackground(Color.blue);
+        // === Panels ===
+        JPanel homePanel = new JPanel();
+        homePanel.setBackground(Color.BLUE);
+        homePanel.add(new JLabel("🏠 This is the Home panel"));
 
+        JPanel settingsPanel = new JPanel();
+        settingsPanel.setBackground(Color.RED);
+        settingsPanel.add(new JLabel("⚙️ This is the Settings panel"));
 
-        JPanel secondPanel = new JPanel();
-        secondPanel.setLayout(new FlowLayout());
-        JLabel secondPanelTitle = new JLabel("This is Second Panel");
-        secondPanelTitle.setForeground(Color.WHITE);
-        secondPanel.add(secondPanelTitle);
-        secondPanel.setBackground(Color.RED);
+        JPanel profilePanel = new JPanel();
+        profilePanel.setBackground(Color.GREEN);
+        profilePanel.add(new JLabel("👤 This is the Profile panel"));
 
+        // Add panels to main panel with "names"
+        mainPanel.add(homePanel, "Home");
+        mainPanel.add(settingsPanel, "Settings");
+        mainPanel.add(profilePanel, "Profile");
 
-        mainPanel.add(firstPanel, "First");
-        mainPanel.add(secondPanel, "Second");
+        // === Buttons ===
+        JPanel buttonPanel = new JPanel();
+        JButton homeBtn = new JButton("Home");
+        JButton settingsBtn = new JButton("Settings");
+        JButton profileBtn = new JButton("Profile");
 
-        JButton nextBtn = new JButton("Next Page");
-        buttonPanel.add(nextBtn);
+        buttonPanel.add(homeBtn);
+        buttonPanel.add(settingsBtn);
+        buttonPanel.add(profileBtn);
 
-
-        cardPanel.add(mainPanel);
-
-
-        add(cardPanel, BorderLayout.NORTH);
+        // === Add panels to frame ===
+        add(mainPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
-
-        nextBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mainPanel.next(cardPanel);
-
-            }
-        });
-
-
-
-
-
-
+        // === Button actions ===
+        homeBtn.addActionListener(e -> cardLayout.show(mainPanel, "Home"));
+        settingsBtn.addActionListener(e -> cardLayout.show(mainPanel, "Settings"));
+        profileBtn.addActionListener(e -> cardLayout.show(mainPanel, "Profile"));
     }
+
     public static void main(String[] args) {
         Test app = new Test();
         app.setVisible(true);
