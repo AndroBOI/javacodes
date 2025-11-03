@@ -20,32 +20,32 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
     public RockPaperScissorsGUI() {
         setTitle("Rock Paper Scissors");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setResizable(false);
         setSize(450, 400);
         setLocationRelativeTo(null);
 
-        // --- Main card layout ---
+
         cardPanel = new JPanel(cardLayout);
         add(cardPanel);
 
-        // ========== GAME PANEL ==========
+
         gamePanel = new JPanel(new BorderLayout(0, 10));
         gamePanel.setBackground(new Color(34, 34, 34));
         gamePanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-        // Title at top
+
         JLabel title = new JLabel("Rock Paper Scissors", SwingConstants.CENTER);
         title.setFont(new Font("Arial", Font.BOLD, 20));
         title.setForeground(Color.WHITE);
         gamePanel.add(title, BorderLayout.NORTH);
 
-        // Center panel - holds everything in the middle
+
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(new Color(34, 34, 34));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
 
-        // Score panel with enhanced visibility
+
         JPanel scorePanel = new JPanel();
         scorePanel.setBackground(new Color(45, 45, 45));
         scorePanel.setBorder(BorderFactory.createCompoundBorder(
@@ -54,14 +54,14 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         ));
         scoreLabel = new JLabel("Player: 0  |  Computer: 0", SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        scoreLabel.setForeground(new Color(255, 215, 0)); // Gold color
+        scoreLabel.setForeground(new Color(255, 215, 0));
         scorePanel.add(scoreLabel);
         scorePanel.setMaximumSize(new Dimension(380, 50));
 
         centerPanel.add(scorePanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // Status label with enhanced visibility
+
         JPanel statusPanel = new JPanel();
         statusPanel.setBackground(new Color(45, 45, 45));
         statusPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -77,7 +77,7 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         centerPanel.add(statusPanel);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Buttons panel
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         buttonPanel.setBackground(new Color(34, 34, 34));
 
@@ -98,10 +98,10 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
         gamePanel.add(centerPanel, BorderLayout.CENTER);
 
-        // Add to card panel
+
         cardPanel.add(gamePanel, "Game");
 
-        // ========== LOSE PANEL ==========
+
         losePanel = new JPanel(new BorderLayout());
         losePanel.setBackground(new Color(34, 34, 34));
 
@@ -122,7 +122,7 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
         cardPanel.add(losePanel, "Lose");
 
-        // ========== WIN PANEL ==========
+
         winPanel = new JPanel(new BorderLayout());
         winPanel.setBackground(new Color(34, 34, 34));
 
@@ -140,7 +140,7 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
         cardPanel.add(winPanel, "Win");
 
-        // show game first
+
         cardLayout.show(cardPanel, "Game");
 
         setVisible(true);
@@ -148,13 +148,13 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
 
     private JButton styleButton(String text, Color color) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setBackground(color);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(10, 18, 10, 18));
 
-        // Hover effect
+
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(color.darker());
@@ -173,7 +173,7 @@ public class RockPaperScissorsGUI extends JFrame implements ActionListener {
         String compChoice = choices[random.nextInt(3)];
         String result = getResult(playerChoice, compChoice);
 
-        // Wrap result text using HTML
+
         String wrappedText = "<html><center>"
                 + "You: " + playerChoice + "<br>"
                 + "Computer: " + compChoice + "<br>"

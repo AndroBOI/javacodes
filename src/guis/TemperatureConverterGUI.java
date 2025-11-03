@@ -14,9 +14,9 @@ public class TemperatureConverterGUI extends JFrame {
     TemperatureConverterGUI() {
         setTitle("Temperature Converter");
         setSize(500, 250);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setResizable(false);
-        setLocationRelativeTo(null); // center the window
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         getContentPane().setBackground(new Color(28, 28, 28));
 
@@ -24,17 +24,17 @@ public class TemperatureConverterGUI extends JFrame {
 
         panelTop = new JPanel();
         panelTop.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        panelTop.setOpaque(false); // transparent to show main bg
+        panelTop.setOpaque(false);
         inputField = new JTextField("32", 10);
-        inputField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        inputField.setFont(new Font("Arial", Font.PLAIN, 16));
         JLabel inputLabel = new JLabel("Enter Temperature:");
         inputLabel.setForeground(Color.WHITE);
-        inputLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        inputLabel.setFont(new Font("Arial", Font.PLAIN, 16));
         panelTop.add(inputLabel);
         panelTop.add(inputField);
         add(panelTop, BorderLayout.NORTH);
 
-        // ------------------- Middle Panel (Buttons) -------------------
+
         panelMid = new JPanel();
         panelMid.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
         panelMid.setOpaque(false);
@@ -50,34 +50,34 @@ public class TemperatureConverterGUI extends JFrame {
         panelMid.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
         add(panelMid, BorderLayout.CENTER);
 
-        // ------------------- Bottom Panel (Result) -------------------
+
         panelBottom = new JPanel();
         panelBottom.setLayout(new FlowLayout(FlowLayout.CENTER));
         panelBottom.setOpaque(false);
         resultLabel = new JLabel("Result will appear here");
         resultLabel.setForeground(Color.WHITE);
-        resultLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panelBottom.add(resultLabel);
         panelBottom.setBorder(BorderFactory.createEmptyBorder(10, 10, 30, 10));
         add(panelBottom, BorderLayout.SOUTH);
 
-        // ------------------- Button Actions -------------------
+
         btnCtoF.addActionListener(e -> convertToF());
         btnFtoC.addActionListener(e -> convertToC());
         btnClear.addActionListener(e -> clear());
 
     }
 
-    // ------------------- Helper Methods -------------------
+
     private JButton createFlatButton(String text, Color color) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        button.setFont(new Font("Arial", Font.BOLD, 14));
         button.setBackground(color);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
-        // Hover effect
+
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(color.darker());

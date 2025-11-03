@@ -14,11 +14,12 @@ public class Calculator extends JFrame {
         setTitle("Calculator");
         setSize(350, 500);
         setResizable(false);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
         getContentPane().setBackground(new Color(45, 45, 45));
 
-        // === Result Panel ===
+
         JPanel resultPanel = new JPanel(new BorderLayout());
         resultPanel.setPreferredSize(new Dimension(350, 80));
         resultPanel.setBackground(new Color(30, 30, 30));
@@ -29,7 +30,7 @@ public class Calculator extends JFrame {
         result.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         resultPanel.add(result, BorderLayout.CENTER);
 
-        // === Buttons Panel ===
+
         JPanel buttonsPanel = new JPanel(new BorderLayout(5, 5));
         buttonsPanel.setBackground(new Color(45, 45, 45));
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
@@ -48,11 +49,11 @@ public class Calculator extends JFrame {
             Color baseColor;
 
             if (label.equals("C")) {
-                baseColor = new Color(255, 80, 80); // Red
+                baseColor = new Color(255, 80, 80);
             } else if (label.matches("[+\\-*/]")) {
-                baseColor = new Color(255, 165, 0); // Orange
+                baseColor = new Color(255, 165, 0);
             } else {
-                baseColor = new Color(0, 123, 255); // Blue for numbers
+                baseColor = new Color(0, 123, 255);
             }
 
             JButton btn = styleButton(label, baseColor);
@@ -62,18 +63,37 @@ public class Calculator extends JFrame {
             gridButtons.add(btn);
         }
 
-        // === Equals Button ===
+
+        JPanel bottomButtonsPanel = new JPanel(new GridLayout(1, 2, 8, 0));
+        bottomButtonsPanel.setBackground(new Color(45, 45, 45));
+
+        JButton deleteBtn = styleButton("DEL", new Color(220, 20, 60));
+        deleteBtn.setFont(new Font("Arial", Font.BOLD, 24));
+        deleteBtn.setPreferredSize(new Dimension(0, 60));
+        deleteBtn.addActionListener(e -> handleDelete());
+
         JButton equalsBtn = styleButton("=", new Color(0, 150, 0));
         equalsBtn.setFont(new Font("Arial", Font.BOLD, 24));
         equalsBtn.setPreferredSize(new Dimension(0, 60));
         equalsBtn.addActionListener(e -> calculateResult());
 
+        bottomButtonsPanel.add(deleteBtn);
+        bottomButtonsPanel.add(equalsBtn);
+
         buttonsPanel.add(gridButtons, BorderLayout.CENTER);
-        buttonsPanel.add(equalsBtn, BorderLayout.SOUTH);
+        buttonsPanel.add(bottomButtonsPanel, BorderLayout.SOUTH);
 
         add(resultPanel, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.CENTER);
     }
+
+    private void handleDelete() {
+        if (currentInput.length() > 0) {
+            currentInput.deleteCharAt(currentInput.length() - 1);
+            result.setText(currentInput.length() > 0 ? currentInput.toString() : "0");
+        }
+    }
+
     private void handleButtonPress(String label) {
         if (label.equals("C")) {
             currentInput.setLength(0);
@@ -83,21 +103,21 @@ public class Calculator extends JFrame {
 
         String current = currentInput.toString();
 
-        // --- Prevent invalid operator placement ---
+
         if ("+-*/".contains(label)) {
             if (current.isEmpty()) {
-                // Cannot start with +, *, /
+
                 if (!label.equals("-")) return;
             } else {
                 char lastChar = current.charAt(current.length() - 1);
-                // Prevent double operators like ++, *-, etc.
+
                 if ("+-*/".indexOf(lastChar) >= 0) return;
-                // Prevent operator right after decimal
+
                 if (lastChar == '.') return;
             }
         }
 
-        // --- Prevent double decimals in the same number ---
+
         if (label.equals(".")) {
             int lastOperatorIndex = Math.max(
                     Math.max(current.lastIndexOf("+"), current.lastIndexOf("-")),
@@ -106,7 +126,7 @@ public class Calculator extends JFrame {
             String lastNumber = current.substring(lastOperatorIndex + 1);
             if (lastNumber.contains(".")) return;
 
-            // Automatically prepend a 0 if user types '.' first
+
             if (lastNumber.isEmpty()) {
                 currentInput.append("0");
             }
@@ -115,7 +135,6 @@ public class Calculator extends JFrame {
         currentInput.append(label);
         result.setText(currentInput.toString());
     }
-
 
     private void calculateResult() {
         try {
@@ -128,7 +147,7 @@ public class Calculator extends JFrame {
         }
     }
 
-    // --- Simple Expression Evaluator ---
+
     private double evaluate(String expr) {
         Stack<Double> numbers = new Stack<>();
         Stack<Character> ops = new Stack<>();
@@ -136,7 +155,6 @@ public class Calculator extends JFrame {
 
         for (char c : expr.toCharArray()) {
             if (Character.isDigit(c) || c == '.') {
-
                 num.append(c);
             } else if ("+-*/".indexOf(c) >= 0) {
                 if (num.length() > 0) {

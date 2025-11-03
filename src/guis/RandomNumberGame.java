@@ -34,20 +34,20 @@ public class RandomNumberGame extends JFrame {
 
     public static String getLowMessage() {
         String msg = guessIsLow[lowIndex];
-        lowIndex = (lowIndex + 1) % guessIsLow.length; // move to next
+        lowIndex = (lowIndex + 1) % guessIsLow.length;
         return msg;
     }
 
     public static String getHighMessage() {
         String msg = guessIsHigh[highIndex];
-        highIndex = (highIndex + 1) % guessIsHigh.length; // move to next
+        highIndex = (highIndex + 1) % guessIsHigh.length;
         return msg;
     }
 
     RandomNumberGame() {
         setTitle("Random Number Guessing Game");
         setSize(500, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setResizable(false);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
@@ -71,7 +71,7 @@ public class RandomNumberGame extends JFrame {
         panelCenter.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
 
 
-        // Bottom panel: Input field + Submit button
+
         panelBottom = new JPanel();
         panelBottom.setBackground(new Color(34, 34, 34));
         inputField = new JTextField(10);
@@ -106,7 +106,7 @@ public class RandomNumberGame extends JFrame {
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
-        // Hover effect
+
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(color.darker());
@@ -123,7 +123,7 @@ public class RandomNumberGame extends JFrame {
     private void generateRandomNumber() {
         if (blinkingTimer != null && blinkingTimer.isRunning()) {
             blinkingTimer.stop();
-            resultLabel.setText("Click 'Generate Random Number' to start!"); // reset label
+            resultLabel.setText("Click 'Generate Random Number' to start!");
         }
         randomNumber = (int) (Math.random() * 60) + 1;
         isRandomNumberGenerated = true;
@@ -156,7 +156,7 @@ public class RandomNumberGame extends JFrame {
         } else {
             String result = "Congratulations! You guessed it!";
 
-            // Array of bright "rainbow" colors
+
             Color[] rainbowColors = new Color[] {
                     Color.RED,
                     Color.ORANGE,
@@ -164,13 +164,13 @@ public class RandomNumberGame extends JFrame {
                     Color.GREEN,
                     Color.CYAN,
                     Color.BLUE,
-                    new Color(148, 0, 211), // violet
+                    new Color(148, 0, 211),
                     Color.MAGENTA
             };
 
             Random rand = new Random();
 
-            // Stop previous blinking if still running
+
             if (blinkingTimer != null && blinkingTimer.isRunning()) {
                 blinkingTimer.stop();
             }
@@ -183,7 +183,7 @@ public class RandomNumberGame extends JFrame {
                         html.append("&nbsp;");
                         continue;
                     }
-                    // Pick a random color from the rainbow array
+
                     Color color = rainbowColors[rand.nextInt(rainbowColors.length)];
                     String hex = String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
                     html.append("<span style='color:").append(hex).append("'>").append(c).append("</span>");
